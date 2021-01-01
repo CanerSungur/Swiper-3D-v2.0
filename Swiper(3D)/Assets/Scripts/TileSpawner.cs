@@ -1,138 +1,59 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TileSpawner : MonoBehaviour
 {
-    public GameObject[] tiles;
+    /*
+     * 
+     * It spawns tiles randomly in z direction according to Player position.
+     * Rolls a dice. If it's successful, spawns a trap on a random tile.
+     * 
+     * Last row's z axis is 15. we want to create rows when we reach mid range of the map.
+     * 
+     */
+
+    [Header("TileSpawner Setup Field")]
+    public GameObject tilePrefab;
+    public Player player;
     public GameObject trap;
-    public GameObject player;
-    public GameObject playerObject;
-    private Vector3 playerPosition;
-    private float zMaxPoint;
-    private float zBuildPoint;
-    private int roadWidth;
-    private bool willSpawn = false;
 
-    [Header("Objects To Spawn")]
-    public GameObject grassPrefab;
+    TileHandler tileHandler;
 
-    //For Spawning By Camera Transform
-    private Vector3 cameraPosition;
-    private float zMaxPointCamera;
-    private float zBuildPointCamera;
-    //Camera camera;
-
-    void Start()
+    private void Start()
     {
-        playerPosition = player.transform.position;
-        zMaxPoint = playerPosition.z + 15;
+        // Instantiate handler with last row's Z axis as parameter.
+        tileHandler = new TileHandler(15);
 
-        //cameraPosition = camera.WorldToScreenPoint(camera.position);
+        player.OnSpawnLinePassed += Player_OnSpawnLinePassed;
     }
 
-    void Update()
+    private void Player_OnSpawnLinePassed(object sender, System.EventArgs e)
     {
-        playerPosition = player.transform.position;
+        // What happens when player passes the line.
+        SpawnRow(tileHandler.GetRowToSpawn());
+    }
 
-        if (zMaxPoint - playerPosition.z <= 12)
+    private void SpawnRow(int position)
+    {
+        // Decide how many tiles will be spawned.
+        int tilesCount = Random.Range(6, 14);
+
+        // Which x axis should it start to instantiate
+        int startingXAxis = Random.Range(4, 8);
+
+        for (int i = 0; i < tilesCount; i++)
         {
-            if (willSpawn)
-            {
-                //Kutu Spawn et.
-                SpawnTiles();
-                willSpawn = false;
-                return;
-            }
-            else
-            {
-                if (Input.GetKey(KeyCode.F))
-                    willSpawn = true;
-            }
+            Instantiate(tilePrefab, new Vector3(startingXAxis + i, 0, position), Quaternion.identity);
         }
+
+        tileHandler.UpdateRowToSpawn();
     }
 
-    private void SpawnTiles()
+    private bool TrapDice()
     {
-        zBuildPoint = playerPosition.z + 12;
-
-        bool spawnWithTrap = false;
-        int trapDice = Random.Range(0, 20);
-
-        if (trapDice == 10)
-            spawnWithTrap = true;
+        int dice = Random.Range(0, 10);
+        if (dice == 5)
+            return true;
         else
-            spawnWithTrap = false;
-        Debug.Log(spawnWithTrap);
-
-        //Orta Row
-        Instantiate(tiles[0], new Vector3(3, 0, zBuildPoint - 1), transform.rotation);
-
-        int leftRandom = Random.Range(1, 4);
-        int rightRandom = Random.Range(5, 8);
-        List<int> trapTileXAxis = new List<int>();
-        
-        //Left Row
-        switch (leftRandom)
-        {
-            case 1:
-                Instantiate(tiles[0], new Vector3(2, 0, zBuildPoint - 1), transform.rotation);
-                trapTileXAxis.Add(2);
-                break;
-            case 2:
-                Instantiate(tiles[0], new Vector3(2, 0, zBuildPoint - 1), transform.rotation);
-                Instantiate(tiles[0], new Vector3(1, 0, zBuildPoint - 1), transform.rotation);
-                trapTileXAxis.Add(2);
-                trapTileXAxis.Add(1);
-                break;
-            case 3:
-                Instantiate(tiles[0], new Vector3(2, 0, zBuildPoint - 1), transform.rotation);
-                Instantiate(tiles[0], new Vector3(1, 0, zBuildPoint - 1), transform.rotation);
-                Instantiate(tiles[0], new Vector3(0, 0, zBuildPoint - 1), transform.rotation);
-                trapTileXAxis.Add(2);
-                trapTileXAxis.Add(1);
-                trapTileXAxis.Add(0);
-                break;
-            default:
-                Debug.Log("Default case.");
-                break;
-        }
-
-        //Right Row
-        switch (rightRandom)
-        {
-            case 5:
-                Instantiate(tiles[0], new Vector3(4, 0, zBuildPoint - 1), transform.rotation);
-                trapTileXAxis.Add(4);
-                break;
-            case 6:
-                Instantiate(tiles[0], new Vector3(4, 0, zBuildPoint - 1), transform.rotation);
-                Instantiate(tiles[0], new Vector3(5, 0, zBuildPoint - 1), transform.rotation);
-                trapTileXAxis.Add(4);
-                trapTileXAxis.Add(5);
-                break;
-            case 7:
-                Instantiate(tiles[0], new Vector3(4, 0, zBuildPoint - 1), transform.rotation);
-                Instantiate(tiles[0], new Vector3(5, 0, zBuildPoint - 1), transform.rotation);
-                Instantiate(tiles[0], new Vector3(6, 0, zBuildPoint - 1), transform.rotation);
-                trapTileXAxis.Add(4);
-                trapTileXAxis.Add(5);
-                trapTileXAxis.Add(6);
-                break;
-            default:
-                Debug.Log("Default case.");
-                break;
-        }
-
-        if (spawnWithTrap)
-        {
-            //Yukarıda listesini yaptığımız X Axis değerleri arasından random bir değer çekelim.
-            Instantiate(trap, new Vector3(trapTileXAxis[Random.Range(0, trapTileXAxis.Count)], 0, zBuildPoint - 1), transform.rotation);
-        }
-    }
-
-    private void ControlSpaceBetweenTiles()
-    {
-
+            return false;
     }
 }

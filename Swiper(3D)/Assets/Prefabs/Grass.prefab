@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 420998602889595725}
   - component: {fileID: 390752582738262415}
   - component: {fileID: 5795596422769142533}
+  - component: {fileID: -821888153466783205}
+  - component: {fileID: 2795351048236458086}
   m_Layer: 0
   m_Name: Grass
   m_TagString: Tile
@@ -112,3 +114,28 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &-821888153466783205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396958063432561997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: daaa8e0588321cc41b08af982f3472c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!65 &2795351048236458086
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396958063432561997}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.05, z: 1.0000001}
+  m_Center: {x: 0, y: -0.46, z: -0.000000059604645}

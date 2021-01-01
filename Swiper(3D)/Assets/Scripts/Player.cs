@@ -1,113 +1,59 @@
-﻿using Packages.Rider.Editor;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public Transform playerPosition;
-    private Vector3 newPosition;
-    private Rigidbody rb;
-    private bool isJumping = false;
+    /*
+     * 
+     * Makes row spawn when player gets passes by the spawn trigger line.
+     * Holds info about player's state.
+     * Switch to relevant state.
+     * 
+     */
 
-    [Header("Player Attributes")]
-    public float thrust = 2f;
-    public float turnSpeed = 4f;
-    public float jumpHeight = 5f;
+    public enum State
+    {
+        Idle,
+        Running,
+        Jumping,
+        Falling,
+        Freeze
+    }
 
-    private bool reset;
-    private bool firstButtonPressed;
-    private float timeOfFirstButton;
+    public event EventHandler OnSpawnLinePassed;
+    public static State state;
+
+    private Vector3 currentPosition;
+    private int spawnTriggerLine;
 
     private void Start()
     {
-        rb = this.GetComponent<Rigidbody>();
+        spawnTriggerLine = 5;        
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        if (Input.GetKey(KeyCode.W))
-        {
-            //rb.AddForce(transform.forward * thrust);
-            rb.AddForce(0, 0, thrust, ForceMode.VelocityChange);
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            rb.AddForce(-thrust, 0, 0, ForceMode.VelocityChange);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddForce(turnSpeed, 0, 0, ForceMode.VelocityChange);
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            rb.AddForce(0, 0, -turnSpeed, ForceMode.VelocityChange);
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (!isJumping)
-            {
-                rb.AddForce(0, jumpHeight, 0, ForceMode.VelocityChange);
-                isJumping = true;
-            }
-        }
-        else if (Input.GetKeyUp(KeyCode.Space))
-        {
-            isJumping = false;
-        }
-    }
+        currentPosition = transform.position;
 
-    void Update()
-    {
-        /*
-        newPosition = transform.position;
-
-        if (Input.GetKeyDown(KeyCode.S))
+        if (currentPosition.z >= spawnTriggerLine)
         {
-            newPosition.z -= 1;
-            transform.position = newPosition;
-        }
-        else if (Input.GetKeyDown(KeyCode.A))
-        {
-            newPosition.x -= 1;
-            transform.position = newPosition;
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            newPosition.x += 1;
-            transform.position = newPosition;
+            // Trigger to Spawn Tiles
+            OnSpawnLinePassed?.Invoke(this, EventArgs.Empty);
+            spawnTriggerLine++;
         }
 
-        if (Input.GetKeyDown(KeyCode.W) && firstButtonPressed)
-        {
-            if (Time.time - timeOfFirstButton < 0.5f)
-            {
-                Debug.Log("DoubleClicked");
-                newPosition.z += 3;
-                transform.position = newPosition;
-            }
-            else
-            {
-                Debug.Log("Too late");
-            }
 
-            reset = true;
+        #region State Changes
+
+        if (transform.position.y < -1f && transform.position.y > -15f)
+        {
+            state = State.Falling;
+        }
+        else if (transform.position.y <= -15f)
+        {
+            state = State.Freeze;
         }
 
-        if (Input.GetKeyDown(KeyCode.W) && !firstButtonPressed)
-        {
-            newPosition.z += 1;
-            transform.position = newPosition;
-
-            firstButtonPressed = true;
-            timeOfFirstButton = Time.time;
-        }
-
-        if (reset)
-        {
-            firstButtonPressed = false;
-            reset = false;
-        }
-        */
+        #endregion
     }
 }
