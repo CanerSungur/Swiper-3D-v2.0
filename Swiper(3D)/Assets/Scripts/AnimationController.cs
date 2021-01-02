@@ -35,6 +35,6 @@ public class AnimationController : MonoBehaviour
                 Player.state = Player.State.Running;
             }
         }
-        else if (Player.state == Player.State.Falling && Player.state == Player.State.Freeze) animator.Play("Falling");
+        else if (Player.state == Player.State.Falling || Player.state == Player.State.Freeze) animator.Play("Falling");
     }
 }

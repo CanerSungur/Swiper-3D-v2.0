@@ -4,7 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     /*
      * 
-     * TODO: Character Controller's isGrounded is not reliable. Can't detect jump key every frame. Change that.
+     * This script controls character's movements and sets state accordingly.
      * 
      */
 
@@ -18,12 +18,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
+
+        #region Character Controller Setup
+
         controller = gameObject.AddComponent<CharacterController>();
         controller.stepOffset = 0f;
         controller.skinWidth = 0.0001f;
         controller.center = new Vector3(0f, 0.23f, 0f);
-        controller.radius = 0.21f;
+        controller.radius = 0.19f;
         controller.height = 0;
+
+        #endregion
+
     }
 
     private void Update()
@@ -41,12 +47,11 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            playerIsGrounded = controller.isGrounded;
-            Debug.Log(controller.isGrounded);
+            playerIsGrounded = Grounded();
 
             if (playerIsGrounded && playerVelocity.y < 0)
             {
-                playerVelocity.y = 0f;
+                playerVelocity.y = 0.1f;
             }
 
             Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
@@ -72,5 +77,16 @@ public class PlayerMovement : MonoBehaviour
             controller.Move(playerVelocity * Time.deltaTime);
 
         }
+    }
+
+    // Character Controller's isGround value is unreliable. That's why we'll check ourselves if we are on ground or not.
+    // Because of Character Controller's collider, it isn't calculated correctly.
+    // That's why we've made our collider bigger and checked the condition reverse.
+    // Meaning: if we are on ground we get false, if we jump collider will go out of the ground and can see the collider below
+    // So if we jump we get true;
+    private bool Grounded()
+    {
+        // We look down to see if there's a collider below us.
+        return !Physics.Raycast(transform.position, Vector3.down, gameObject.GetComponent<Collider>().bounds.extents.y + 1f);
     }
 }
