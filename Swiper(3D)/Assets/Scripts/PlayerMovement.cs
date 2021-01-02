@@ -9,15 +9,17 @@ public class PlayerMovement : MonoBehaviour
      */
 
     [Header("Controller Setup Field")]
+    private Player player;
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool playerIsGrounded;
-    private float playerSpeed = 0.1f;
+    //private float playerSpeed = 0.1f;
     private float jumpHeight = 1.0f;
     private float gravityValue = -9.81f;
 
     private void Start()
     {
+        player = GetComponent<Player>();
 
         #region Character Controller Setup
 
@@ -55,7 +57,7 @@ public class PlayerMovement : MonoBehaviour
             }
 
             Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            controller.Move(move * Time.deltaTime * playerSpeed);
+            controller.Move(move * Time.deltaTime * player.GetPlayerSpeedRate());
 
             if (move != Vector3.zero)
             {

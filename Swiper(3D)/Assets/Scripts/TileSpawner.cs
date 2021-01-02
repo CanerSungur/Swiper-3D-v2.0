@@ -12,7 +12,7 @@ public class TileSpawner : MonoBehaviour
      */
 
     [Header("TileSpawner Setup Field")]
-    public GameObject tilePrefab;
+    public GameObject[] tilePrefabs;
     public Player player;
     public GameObject trap;
 
@@ -42,7 +42,7 @@ public class TileSpawner : MonoBehaviour
 
         for (int i = 0; i < tilesCount; i++)
         {
-            Instantiate(tilePrefab, new Vector3(startingXAxis + i, 0, position), Quaternion.identity);
+            Instantiate(tilePrefabs[Random.Range(0, 2)], new Vector3(startingXAxis + i, 0, position), Quaternion.identity);
         }
 
         tileHandler.UpdateRowToSpawn();

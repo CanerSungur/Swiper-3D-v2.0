@@ -6566,7 +6566,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c46537602a6199740b2c2719277b3891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 396958063432561997, guid: d4997a0eb4de30e4db8acbeedba8b41a, type: 3}
+  tilePrefabs:
+  - {fileID: 396958063432561997, guid: d4997a0eb4de30e4db8acbeedba8b41a, type: 3}
+  - {fileID: 396958063432561997, guid: 5388a7bb9e0136c49b41f4cae709656f, type: 3}
   player: {fileID: 8565611695301665551}
   trap: {fileID: 8097886286769747044, guid: 0939cbfcb11a17a4d961eabd59745b16, type: 3}
 --- !u!1001 &855569069
