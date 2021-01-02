@@ -10,6 +10,8 @@ public class Player : MonoBehaviour
      * Switch to relevant state.
      * Switch to relevant ground.
      * 
+     * To change Player's speed, we alter animation speedRate.
+     * 
      */
 
     public enum State
@@ -21,28 +23,21 @@ public class Player : MonoBehaviour
         Freeze
     }
 
-    public enum Ground
-    {
-        Grass,
-        Dirt
-    }
-
     public event EventHandler OnSpawnLinePassed;
     public event EventHandler OnGroundChange;
+
     public static State state;
-    public static Ground ground;
 
     private Vector3 currentPosition;
     private int spawnTriggerLine;
-    private float speeRate;
+    private float speedRate;
 
     private void Start()
     {
         spawnTriggerLine = 5;
-        speeRate = 1f;
+        speedRate = 1f;
 
         state = State.Idle;
-        ground = Ground.Grass;
     }
 
     private void Update()
@@ -73,33 +68,35 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        //ground = Ground.Dirt;
-        
         IMovementRestraint mrTile = other.GetComponent<IMovementRestraint>();
         if (mrTile != null)
         {
             mrTile.Slow();
         }
 
-        OnGroundChange(this, EventArgs.Empty);
+        OnGroundChange?.Invoke(this, EventArgs.Empty);
     }
 
     private void OnTriggerExit(Collider other)
     {
-        //ground = Ground.Grass;
-        
-        speeRate = 1f;
+        SetPlayerSpeedRate();
 
-        OnGroundChange(this, EventArgs.Empty);
+        OnGroundChange?.Invoke(this, EventArgs.Empty);
     }
 
     public float GetPlayerSpeedRate()
     {
-        return speeRate;
+        return speedRate;
     }
 
     public void SetPlayerSpeedRate(float speedRate)
     {
-        this.speeRate = speedRate;
+        this.speedRate = speedRate;
+    }
+
+    public void SetPlayerSpeedRate()
+    {
+        speedRate = 1f;
     }
 }
+

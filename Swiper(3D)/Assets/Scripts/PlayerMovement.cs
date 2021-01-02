@@ -53,7 +53,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (playerIsGrounded && playerVelocity.y < 0)
             {
-                playerVelocity.y = 0.1f;
+                playerVelocity.y = 0f;
             }
 
             Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));

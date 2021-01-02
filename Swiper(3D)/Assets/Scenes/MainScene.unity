@@ -6521,6 +6521,7 @@ GameObject:
   - component: {fileID: 852119389}
   - component: {fileID: 852119388}
   - component: {fileID: 852119391}
+  - component: {fileID: 852119390}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -6554,6 +6555,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &852119390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 852119387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88bee1f98b412784198eac3bf7f7acc7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &852119391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14154,6 +14167,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7555135423895250511, guid: f256b0081c6729b45a5473918c87e6e2, type: 3}
+      propertyPath: utilities
+      value: 
+      objectReference: {fileID: 852119390}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f256b0081c6729b45a5473918c87e6e2, type: 3}
 --- !u!114 &8565611695301665551 stripped
