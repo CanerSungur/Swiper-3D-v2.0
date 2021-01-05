@@ -13,9 +13,10 @@ public class PlayerMovement : MonoBehaviour
     private CharacterController controller;
     private Vector3 playerVelocity;
     private bool playerIsGrounded;
-    //private float playerSpeed = 0.1f;
     private float jumpHeight = 1.0f;
     private float gravityValue = -9.81f;
+
+    [SerializeField] private LayerMask groundLayerMask;
 
     private void Start()
     {
@@ -49,7 +50,9 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            playerIsGrounded = Grounded();
+            playerIsGrounded = IsGrounded();
+
+            Debug.Log(playerIsGrounded ? "Grounded." : "Not Grounded.");
 
             if (playerIsGrounded && playerVelocity.y < 0)
             {
@@ -82,13 +85,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Character Controller's isGround value is unreliable. That's why we'll check ourselves if we are on ground or not.
-    // Because of Character Controller's collider, it isn't calculated correctly.
-    // That's why we've made our collider bigger and checked the condition reverse.
-    // Meaning: if we are on ground we get false, if we jump collider will go out of the ground and can see the collider below
-    // So if we jump we get true;
-    private bool Grounded()
+    // Chatacter Controller's own collider messes up the calculation.
+    // That's why we've added layer to the ground and checked that layer collision only.
+    private bool IsGrounded()
     {
         // We look down to see if there's a collider below us.
-        return !Physics.Raycast(transform.position, Vector3.down, gameObject.GetComponent<Collider>().bounds.extents.y + 1f);
+        return Physics.Raycast(gameObject.GetComponent<Collider>().bounds.center, Vector3.down, gameObject.GetComponent<Collider>().bounds.extents.y + 0.05f, groundLayerMask);
     }
 }

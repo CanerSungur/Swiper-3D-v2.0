@@ -12,9 +12,16 @@ public class TileSpawner : MonoBehaviour
      */
 
     [Header("TileSpawner Setup Field")]
-    public GameObject[] tilePrefabs;
+    //public GameObject[] tilePrefabs;
     public Player player;
     public GameObject trap;
+
+    [Header("Zone Prefabs Setup")]
+    public GameObject[] grassZonePrefabs;
+    public GameObject[] forestZonePrefabs_1;
+    public GameObject[] forestZonePrefabs_2;
+    public GameObject[] forestZonePrefabs_3;
+    public GameObject[] dangerousForestZonePrefabs;
 
     TileHandler tileHandler;
 
@@ -42,7 +49,7 @@ public class TileSpawner : MonoBehaviour
 
         for (int i = 0; i < tilesCount; i++)
         {
-            Instantiate(tilePrefabs[Random.Range(0, 2)], new Vector3(startingXAxis + i, 0, position), Quaternion.identity);
+            Instantiate(forestZonePrefabs_1[Random.Range(0, forestZonePrefabs_1.Length)], new Vector3(startingXAxis + i, 0, position), Quaternion.identity);
         }
 
         tileHandler.UpdateRowToSpawn();
