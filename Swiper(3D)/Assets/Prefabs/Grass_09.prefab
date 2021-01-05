@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5795596422769142533}
   - component: {fileID: -821888153466783205}
   m_Layer: 7
-  m_Name: Grass_08
+  m_Name: Grass_09
   m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130,6 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: daaa8e0588321cc41b08af982f3472c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnChance: 2
 --- !u!1001 &161224300677345905
 PrefabInstance:
   m_ObjectHideFlags: 0

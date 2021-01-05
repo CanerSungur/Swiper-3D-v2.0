@@ -15,9 +15,9 @@ GameObject:
   - component: {fileID: 5795596422769142533}
   - component: {fileID: -1903713731328914303}
   - component: {fileID: 2725066857748234097}
-  - component: {fileID: -9097866673676547802}
+  - component: {fileID: 6924313145226508624}
   m_Layer: 7
-  m_Name: Dirt
+  m_Name: Swamp_01
   m_TagString: Tile
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c9d29f2f60426b146b95b9a3cac4210c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnChance: 2
 --- !u!65 &2725066857748234097
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -140,7 +141,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1, y: 1, z: 1.0000001}
   m_Center: {x: 0, y: -0.5, z: -0.000000059604645}
---- !u!54 &-9097866673676547802
+--- !u!54 &6924313145226508624
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

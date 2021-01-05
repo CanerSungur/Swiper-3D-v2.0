@@ -1,8 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public interface ITile
 {
-    GameObject player { get; set; }
+    GameObject Player { get; set; }
+    int SpawnChance { get; set; }
     void DestroySelf();
 }

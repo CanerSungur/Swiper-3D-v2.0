@@ -23,10 +23,21 @@ public class Player : MonoBehaviour
         Freeze
     }
 
+    public enum Zone
+    {
+        Grass,
+        Swamp,
+        Forest_1,
+        Forest_2,
+        Forest_3,
+        DangerousForest
+    }
+
     public event EventHandler OnSpawnLinePassed;
     public event EventHandler OnGroundChange;
 
     public static State state;
+    public static Zone zone;
 
     private Vector3 currentPosition;
     private int spawnTriggerLine;
@@ -38,6 +49,7 @@ public class Player : MonoBehaviour
         speedRate = 1f;
 
         state = State.Idle;
+        zone = Zone.Forest_1;
     }
 
     private void Update()

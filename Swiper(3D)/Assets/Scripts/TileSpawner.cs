@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class TileSpawner : MonoBehaviour
 {
@@ -12,16 +13,17 @@ public class TileSpawner : MonoBehaviour
      */
 
     [Header("TileSpawner Setup Field")]
-    //public GameObject[] tilePrefabs;
     public Player player;
     public GameObject trap;
 
     [Header("Zone Prefabs Setup")]
     public GameObject[] grassZonePrefabs;
-    public GameObject[] forestZonePrefabs_1;
-    public GameObject[] forestZonePrefabs_2;
-    public GameObject[] forestZonePrefabs_3;
-    public GameObject[] dangerousForestZonePrefabs;
+    public GameObject forestZonePrefab_1;
+    public GameObject forestZonePrefab_2;
+    public GameObject forestZonePrefab_3;
+    //public GameObject[] dangerousForestZonePrefabs;
+
+    public ITile[] exampleTilePrefabs;
 
     TileHandler tileHandler;
 
@@ -49,7 +51,7 @@ public class TileSpawner : MonoBehaviour
 
         for (int i = 0; i < tilesCount; i++)
         {
-            Instantiate(forestZonePrefabs_1[Random.Range(0, forestZonePrefabs_1.Length)], new Vector3(startingXAxis + i, 0, position), Quaternion.identity);
+            Instantiate(PickRandomTile(grassZonePrefabs), new Vector3(startingXAxis + i, 0, position), Quaternion.identity);
         }
 
         tileHandler.UpdateRowToSpawn();
@@ -62,5 +64,42 @@ public class TileSpawner : MonoBehaviour
             return true;
         else
             return false;
+    }
+
+    private GameObject PickRandomTile(GameObject[] tilesToPick)
+    {
+        int r = RandomNumber(0, 100);
+
+        List<GameObject> highChance = new List<GameObject>();
+        List<GameObject> midChance = new List<GameObject>();
+        List<GameObject> lowChance = new List<GameObject>();
+
+        foreach (var tile in tilesToPick)
+        {
+            if (tile.GetComponent<ITile>().SpawnChance == 1)
+                highChance.Add(tile);
+            else if (tile.GetComponent<ITile>().SpawnChance == 2)
+                midChance.Add(tile);
+            else
+                lowChance.Add(tile);
+        }
+
+        if (r >= 0 && r <= 85)
+            return highChance[Random.Range(0, highChance.Count)];
+        else if (r > 85 && r <= 98)
+            return midChance[Random.Range(0, midChance.Count)];
+        else
+        {
+            // if we are not in forest zone.
+            if (lowChance == null)
+                return highChance[Random.Range(0, highChance.Count)];
+            else
+                return lowChance[Random.Range(0, lowChance.Count)];
+        }
+    }
+
+    private int RandomNumber(int min, int max)
+    {
+        return Random.Range(min, max);
     }
 }
