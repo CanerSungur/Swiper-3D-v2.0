@@ -5,6 +5,16 @@ public class AnimationController : MonoBehaviour
     private Animator animator;
     private Player player;
 
+    #region Animations & Variables
+
+    private readonly string IS_JUMPING_ANIM = "Jumping";
+    private readonly string IS_FALLING_ANIM = "Falling";
+    private readonly string IS_IDLE_BOOL = "isIdle";
+    private readonly string IS_RUNNING_BOOL = "isRunning";
+    private readonly string MOVE_SPEED_FLOAT = "moveSpeed";
+
+    #endregion
+
     private void Start()
     {
         animator = GetComponent<Animator>();
@@ -16,33 +26,33 @@ public class AnimationController : MonoBehaviour
     private void Player_OnGroundChange(object sender, System.EventArgs e)
     {
         // Update animation speed when ground changes.
-        animator.SetFloat("moveSpeed", player.GetPlayerSpeedRate());
+        animator.SetFloat(MOVE_SPEED_FLOAT, player.GetPlayerSpeedRate());
     }
 
     private void Update()
     {
         if (Player.state == Player.State.Idle)
         {
-            animator.SetBool("isIdle", true);
-            animator.SetBool("isRunning", false);
+            animator.SetBool(IS_IDLE_BOOL, true);
+            animator.SetBool(IS_RUNNING_BOOL, false);
         }
         else if (Player.state == Player.State.Running)
         {
-            animator.SetBool("isIdle", false);
-            animator.SetBool("isRunning", true);
+            animator.SetBool(IS_IDLE_BOOL, false);
+            animator.SetBool(IS_RUNNING_BOOL, true);
         }
         else if (Player.state == Player.State.Jumping)
         {
-            animator.Play("Jumping");
-            if (animator.GetBool("isIdle"))
+            animator.Play(IS_JUMPING_ANIM);
+            if (animator.GetBool(IS_IDLE_BOOL))
             {
                 Player.state = Player.State.Idle;
             }
-            else if (animator.GetBool("isRunning"))
+            else if (animator.GetBool(IS_RUNNING_BOOL))
             {
                 Player.state = Player.State.Running;
             }
         }
-        else if (Player.state == Player.State.Falling || Player.state == Player.State.Freeze) animator.Play("Falling");
+        else if (Player.state == Player.State.Falling || Player.state == Player.State.Freeze) animator.Play(IS_FALLING_ANIM);
     }
 }
